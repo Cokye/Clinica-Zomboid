@@ -1,0 +1,17 @@
+name: clinicaDB-system
+
+services:
+  arangodb:
+    image: arangodb:latest
+    container_name: arangodb_dev    # Forzar el nombre exacto del contenedor
+    restart: always
+    environment:
+      ARANGO_ROOT_PASSWORD: root
+    ports:
+      - "8529:8529"
+    volumes:
+      - arango_data:/var/lib/arangodb3
+
+volumes:
+  arango_data:
+    name: arango_data               # Forzar el nombre exacto del volumen (sin prefijo)

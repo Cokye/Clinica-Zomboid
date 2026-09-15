@@ -1,0 +1,243 @@
+<div class="page-container">
+  <!-- Top Navigation / Hero Header -->
+  <header class="app-header">
+    <div class="header-content">
+      <div class="brand">
+        <div class="brand-badge">
+          <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Convenios Médicos</h1>
+          <p class="subtitle">Planes de salud familiar y beneficios preferenciales</p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div class="header-status">
+          <span class="status-indicator"></span>
+          <span class="status-text">{{ nombreTitularEncontrado || rutUsuarioLogueado }}</span>
+        </div>
+        <button type="button" class="btn-logout-header" (click)="cerrarSesion()">
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-layout">
+    <!-- SECCIÓN 1: Catálogo de Planes -->
+    <section class="panel panel-planes">
+      <div class="panel-header">
+        <div class="icon-bubble">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h2>Planes Disponibles</h2>
+          <p>Selecciona la cobertura que mejor se adapte a tu grupo familiar</p>
+        </div>
+      </div>
+
+      <div class="planes-grid">
+        <div 
+          *ngFor="let p of planes" 
+          class="plan-card"
+          [class.plan-card-active]="planSeleccionado === p.key"
+          (click)="seleccionarPlan(p.key)"
+        >
+          <div class="plan-card-badge">{{ p.ahorro }}% DCTO</div>
+          <h3 class="plan-title">{{ p.nombre }}</h3>
+          <p class="plan-desc">{{ p.descripcion || 'Cobertura integral en consultas médicas, telemedicina y exámenes ambulatorios.' }}</p>
+          
+          <div class="plan-footer">
+            <div class="plan-price">
+              <span class="price-value">{{ p.precioMensual ? ('$' + (p.precioMensual | number:'1.0-0')) : 'Tarifa fija' }}</span>
+              <span class="price-cycle">/mes</span>
+            </div>
+            <button 
+              type="button" 
+              class="btn-plan-toggle"
+              [class.btn-selected]="planSeleccionado === p.key"
+            >
+              {{ planSeleccionado === p.key ? 'Seleccionado' : 'Elegir' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLUMNA DERECHA: Consultar y Contratar -->
+    <div class="form-columns">
+      
+      <!-- SECCIÓN 2: Mi Afiliación Actual -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="icon-bubble icon-bubble-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div>
+            <h2>Mi Cobertura Actual</h2>
+            <p>Convenio activo vinculado a tu cuenta personal</p>
+          </div>
+        </div>
+
+        <div *ngIf="cargandoAfiliacion" class="state-hint">
+          <span class="spinner-dot"></span> Obteniendo información de tu convenio...
+        </div>
+
+        <div *ngIf="mensaje && !cargandoAfiliacion" class="alert-box alert-warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span>{{ mensaje }}</span>
+        </div>
+
+        <div *ngIf="afiliacionActual" class="result-card">
+          <div class="result-header">
+            <div>
+              <span class="result-label">Plan Vigente</span>
+              <h4 class="result-plan-name">{{ afiliacionActual.nombreConvenio }}</h4>
+            </div>
+            <span class="badge-discount">{{ afiliacionActual.ahorro }}% Ahorro</span>
+          </div>
+
+          <div class="result-meta">
+            <div class="meta-row">
+              <span class="meta-title">Titular del plan:</span>
+              <span class="meta-value">{{ afiliacionActual.titular }} {{ afiliacionActual.titular === rutUsuarioLogueado ? '(Tú)' : '' }}</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-title">Total con cobertura:</span>
+              <span class="meta-value">{{ afiliacionActual.beneficiarios?.length || 0 }} persona(s)</span>
+            </div>
+          </div>
+
+          <div class="result-beneficiaries">
+            <span class="beneficiaries-title">Beneficiarios del grupo:</span>
+            <div class="beneficiaries-list">
+              <div *ngFor="let b of beneficiariosDetalle" class="beneficiary-row">
+                <div class="beneficiary-info">
+                  <span class="beneficiary-name">{{ b.nombreCompleto }}</span>
+                  <span class="beneficiary-rut">{{ b.rut }}</span>
+                </div>
+                <span *ngIf="b.rut === afiliacionActual.titular" class="tag-titular-pill">Titular</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="afiliacionActual.titular !== rutUsuarioLogueado" style="margin-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px;">
+            <button 
+              type="button" 
+              class="btn-sm" 
+              style="background-color: #e11d48; color: white; width: 100%;"
+              (click)="desvincularse()"
+            >
+              Desvincularme de este grupo familiar
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 3: Contratar / Afiliar -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="icon-bubble icon-bubble-emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7.5" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+          </div>
+          <div>
+            <h2>Contratar Convenio</h2>
+            <p>Inscribe tu plan de salud y asocia a tus cargas familiares</p>
+          </div>
+        </div>
+
+        <div class="form-body">
+          <div class="notice-box notice-success" style="margin-bottom: 16px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div>
+              <span class="notice-title">Titular de la cuenta</span>
+              <p class="notice-sub">{{ nombreTitularEncontrado }} ({{ rutUsuarioLogueado }})</p>
+            </div>
+          </div>
+
+          <!-- Selección de Plan usando p.key exclusivamente -->
+          <div class="form-group">
+            <label class="form-label">Convenio a contratar</label>
+            <select class="select-custom" [(ngModel)]="planSeleccionado">
+              <option value="">-- Elige un plan del catálogo --</option>
+              <option *ngFor="let p of planes" [value]="p.key">
+                {{ p.nombre }} ({{ p.ahorro }}% DCTO)
+              </option>
+            </select>
+          </div>
+
+          <!-- Agregar Cargas -->
+          <div class="form-group">
+            <label class="form-label">Agregar Cargas Familiares</label>
+            <div class="add-charge-row">
+              <input 
+                type="text" 
+                class="input-custom"
+                [ngModel]="nuevoBeneficiario" 
+                (ngModelChange)="onBeneficiarioChange($event)" 
+                maxlength="10"
+                placeholder="RUT Carga (ej: 24555666-7)" 
+              />
+              <button type="button" class="btn-secondary" (click)="agregarBeneficiario()">
+                + Agregar
+              </button>
+            </div>
+          </div>
+
+          <div *ngIf="mostrarFormularioCarga" class="nested-box nested-box-amber">
+            <div class="nested-header text-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Nueva carga <strong>{{ cargaTempRut }}</strong> sin registro:</span>
+            </div>
+            <div class="grid-2col">
+              <input type="text" class="input-custom input-sm" [(ngModel)]="cargaTempNombre" placeholder="Nombre" />
+              <input type="text" class="input-custom input-sm" [(ngModel)]="cargaTempApellido" placeholder="Apellido" />
+            </div>
+            <div class="grid-2col" style="margin-top: 8px;">
+              <input type="number" class="input-custom input-sm" [(ngModel)]="cargaTempEdad" placeholder="Edad" />
+              <input type="email" class="input-custom input-sm" [(ngModel)]="cargaTempCorreo" placeholder="Correo electrónico" />
+            </div>
+            <div class="grid-2col" style="margin-top: 8px;">
+              <input type="password" class="input-custom input-sm" [(ngModel)]="cargaTempPassword" placeholder="Contraseña" />
+            </div>
+            <div class="nested-actions">
+              <button type="button" class="btn-sm btn-emerald" (click)="confirmarNuevaCarga()">Guardar Carga</button>
+              <button type="button" class="btn-sm btn-muted" (click)="cancelarNuevaCarga()">Cancelar</button>
+            </div>
+          </div>
+
+          <div class="tags-wrapper" *ngIf="beneficiariosUI.length > 0">
+            <span class="tags-label">Cargas familiares agregadas:</span>
+            <div class="tags-container">
+              <div *ngFor="let b of beneficiariosUI; let i = index" class="charge-chip">
+                <span>{{ b.etiqueta }}</span>
+                <button type="button" class="btn-chip-remove" (click)="eliminarBeneficiario(i)">&times;</button>
+              </div>
+            </div>
+          </div>
+
+          <button 
+            type="button" 
+            class="btn-submit-main"
+            (click)="contratarPlan()"
+          >
+            Confirmar e Inscribir Convenio
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>

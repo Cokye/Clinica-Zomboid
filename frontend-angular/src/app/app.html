@@ -1,0 +1,22 @@
+<div class="site-wrapper">
+  <nav class="navbar-global">
+    <div class="nav-inner">
+      <div class="nav-brand" routerLink="/">
+        <div class="brand-badge-mini">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-name">Portal Clínico Familiar</span>
+      </div>
+
+      <div class="nav-actions">
+        <a *ngIf="!convenioService.estaAutenticado()" routerLink="/login" class="btn-nav-login">
+          Iniciar Sesión
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <router-outlet></router-outlet>
+</div>

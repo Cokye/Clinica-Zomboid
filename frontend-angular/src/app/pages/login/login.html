@@ -1,0 +1,138 @@
+<main class="login-view">
+  <div class="login-card">
+    <a routerLink="/" class="btn-back-landing">← Volver al inicio</a>
+    
+    <div class="login-header">
+      <div class="login-icon-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <h2>{{ modoRegistro ? 'Registro de Titular' : 'Acceso al Portal' }}</h2>
+      <p>{{ modoRegistro ? 'Crea tu cuenta para administrar convenios' : 'Ingresa tus credenciales para acceder' }}</p>
+    </div>
+
+    <!-- FORMULARIO 1: INICIAR SESIÓN -->
+    <form *ngIf="!modoRegistro" (submit)="iniciarSesion(); $event.preventDefault()" class="login-form">
+      
+      <!-- Campo RUT -->
+      <div class="form-group">
+        <label class="form-label" for="rutLogin">RUT TITULAR</label>
+        <input 
+          id="rutLogin"
+          type="text" 
+          class="input-custom" 
+          placeholder="Ej: 12345678-9" 
+          [ngModel]="rutBusqueda"
+          (ngModelChange)="onRutBusquedaChange($event)" 
+          name="rutLogin"
+          maxlength="10" 
+          required 
+          autocomplete="username"
+        />
+      </div>
+
+      <!-- Campo CONTRASEÑA OBLIGATORIA -->
+      <div class="form-group">
+        <label class="form-label" for="passwordLogin">CONTRASEÑA</label>
+        <input 
+          id="passwordLogin"
+          type="password" 
+          class="input-custom" 
+          placeholder="Ingresa tu contraseña" 
+          [(ngModel)]="passwordLogin" 
+          name="passwordLogin"
+          required 
+          autocomplete="current-password"
+        />
+      </div>
+
+      <div *ngIf="mensajeExito" class="alert-box alert-success">
+        <span>{{ mensajeExito }}</span>
+      </div>
+
+      <div *ngIf="errorLogin" class="alert-box alert-warn">
+        <span>{{ errorLogin }}</span>
+      </div>
+
+      <button type="submit" class="btn-submit-main" [disabled]="cargando">
+        {{ cargando ? 'Validando credenciales...' : 'Entrar a mi Cuenta' }}
+      </button>
+
+      <div class="switch-mode-box">
+        <span>¿No tienes cuenta?</span>
+        <button type="button" class="btn-link" (click)="toggleModo()">Registrarme aquí</button>
+      </div>
+    </form>
+
+    <!-- FORMULARIO 2: REGISTRO NUEVO -->
+    <form *ngIf="modoRegistro" (submit)="registrarUsuario(); $event.preventDefault()" class="login-form">
+      
+      <div class="form-group">
+        <label class="form-label" for="rutRegistro">RUT TITULAR</label>
+        <input 
+          id="rutRegistro"
+          type="text" 
+          class="input-custom" 
+          placeholder="Ej: 12345678-9" 
+          [ngModel]="rutBusqueda"
+          (ngModelChange)="onRutBusquedaChange($event)" 
+          name="rutRegistro"
+          maxlength="10" 
+          required 
+        />
+      </div>
+
+      <div class="grid-2col">
+        <div class="form-group mb-0">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="input-custom" [(ngModel)]="nuevoNombre" name="nuevoNombre" placeholder="Juan" required />
+        </div>
+        <div class="form-group mb-0">
+          <label class="form-label">Apellido</label>
+          <input type="text" class="input-custom" [(ngModel)]="nuevoApellido" name="nuevoApellido" placeholder="Pérez" required />
+        </div>
+      </div>
+
+      <div class="grid-edad-correo">
+        <div class="form-group mb-0">
+          <label class="form-label">Edad</label>
+          <input type="number" class="input-custom" [(ngModel)]="nuevoEdad" name="nuevoEdad" placeholder="30" />
+        </div>
+        <div class="form-group mb-0">
+          <label class="form-label">Correo Electrónico</label>
+          <input type="email" class="input-custom" [(ngModel)]="nuevoCorreo" name="nuevoCorreo" placeholder="correo@ejemplo.cl" />
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 14px;">
+        <label class="form-label" for="nuevoPassword">CONTRASEÑA</label>
+        <input 
+          id="nuevoPassword"
+          type="password" 
+          class="input-custom" 
+          [(ngModel)]="nuevoPassword" 
+          name="nuevoPassword" 
+          placeholder="Crea una contraseña" 
+          required 
+          autocomplete="new-password"
+        />
+      </div>
+
+      <div *ngIf="errorLogin" class="alert-box alert-warn">
+        <span>{{ errorLogin }}</span>
+      </div>
+
+      <button type="submit" class="btn-submit-main" [disabled]="cargando">
+        {{ cargando ? 'Registrando...' : 'Completar Registro' }}
+      </button>
+
+      <div class="switch-mode-box">
+        <span>¿Ya tienes cuenta?</span>
+        <button type="button" class="btn-link" (click)="toggleModo()">Iniciar Sesión</button>
+      </div>
+    </form>
+
+  </div>
+</main>

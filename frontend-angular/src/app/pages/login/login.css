@@ -1,0 +1,183 @@
+.login-view {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: #111827;
+  border: 1px solid #273549;
+  border-radius: 14px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.btn-back-landing {
+  display: inline-block;
+  text-decoration: none;
+  color: #9ca3af;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+
+.btn-back-landing:hover {
+  color: #fff;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.login-icon-box svg {
+  width: 24px;
+  height: 24px;
+}
+
+.login-header h2 {
+  margin: 0 0 6px 0;
+  color: #fff;
+  font-size: 1.3rem;
+}
+
+.login-header p {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 0.85rem;
+}
+
+.form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+/* Grillas para el formulario de registro */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.grid-edad-correo {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.input-custom {
+  width: 100%;
+  background-color: #1f2937;
+  border: 1px solid #273549;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-custom:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.alert-box {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  margin-bottom: 14px;
+}
+
+.alert-warn {
+  background-color: rgba(225, 29, 72, 0.12);
+  border: 1px solid #f43f5e;
+  color: #fda4af;
+}
+
+.alert-success {
+  background-color: rgba(16, 185, 129, 0.12);
+  border: 1px solid #10b981;
+  color: #34d399;
+}
+
+.btn-submit-main {
+  width: 100%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 13px;
+  border-radius: 10px;
+  font-size: 0.94rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-submit-main:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+}
+
+.btn-submit-main:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch-mode-box {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #9ca3af;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-link {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-size: 0.85rem;
+}
+
+.btn-link:hover {
+  color: #60a5fa;
+}
