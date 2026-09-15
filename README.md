@@ -26,7 +26,7 @@ El proyecto está dividido en tres módulos principales comunicados mediante API
               +--------------------------------+
               |     Backend (Spring Boot)      |
               +--------------------------------+
-                           ▲        ▲
+                            ▲        ▲
                  (REST/JSON)│        │(REST/JSON)
         +-------------------+        +-------------------+
         │                                                │
