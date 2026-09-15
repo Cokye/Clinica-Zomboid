@@ -33,11 +33,10 @@ El proyecto está dividido en tres módulos principales comunicados mediante API
 +-----------------------+                        +-----------------------+
 |  Portal Convenios     |                        |  Portal Agendamiento  |
 |      (Angular)        |                        |       (React)         |
-| • Login / Auth        |                        | • Toma de horas       |
-| • Venta de convenios  |                        | • Descuentos médicos  |
+| Login / Auth          |                        | Toma de horas         |
+| Venta de convenios    |                        | Descuentos médicos    |
 +-----------------------+                        +-----------------------+
 
----
 
 ## 🛠️ Tecnologías y Dependencias
 
