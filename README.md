@@ -143,3 +143,7 @@ Colecciones documentales utilizadas:
 * **medicos:** Especialistas y bloques horarios disponibles.
 * **citas:** Horas médicas agendadas con cálculo del descuento aplicado.
 
+## 👤 Autor
+
+* Desarrollado por **Felipe** ([@Cokye](https://github.com/Cokye))
+
